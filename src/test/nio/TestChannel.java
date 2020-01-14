@@ -31,7 +31,7 @@ import java.nio.file.StandardOpenOption;
  * 2. JDK1.7之后 NIO2 针对各个通道提供了静态方法 open()
  * 3. JDK1.7之后 NIO2 的File工具类的newByteChannel()
  *
- * 四、通道之前的传输
+ * 四、通道之间的传输
  *  transferTo()
  *  transferFrom()
  */
@@ -43,7 +43,6 @@ public class TestChannel {
         FileInputStream fileInputStream = null;
         FileOutputStream fileOutputStream = null;
 
-        //1.获取通道
         FileChannel inChannel= null;
         FileChannel outChannel = null;
         try {
@@ -135,7 +134,7 @@ public class TestChannel {
         }
     }
 
-    //通道之间的传输（直接缓存区）
+    //通道之间的传输（直接缓冲区）
     @Test
     public void test03(){
         FileChannel inChannel = null;
