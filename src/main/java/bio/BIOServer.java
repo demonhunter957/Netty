@@ -43,7 +43,7 @@ public class BIOServer {
             while (true){
                 System.out.println("read...");
                 int read = inputStream.read(bytes); //如果客户端没有发送数据，这里也会产生阻塞
-                if ( read != 1){
+                if ( read != -1){
                     System.out.println(new String(bytes, 0, read)); //输出客户端发送的数据
                 }else {
                     break;
