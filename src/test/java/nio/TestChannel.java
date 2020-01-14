@@ -23,8 +23,8 @@ import java.util.SortedMap;
  * Java.nio.channel.Channel接口
  *      |--FileChannel
  *      |--SocketChannel
- *      |ServerSocketChannel
- *      |DatagramChannel
+ *      |--ServerSocketChannel
+ *      |--DatagramChannel
  *
  * 三、获取通道
  * 1. Java针对支持通道的类提供了getChannel()方法
