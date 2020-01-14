@@ -2,9 +2,7 @@ package nio;
 
 import org.junit.Test;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -34,6 +32,10 @@ import java.nio.file.StandardOpenOption;
  * 四、通道之间的传输
  *  transferTo()
  *  transferFrom()
+ *
+ *  五、分散（Scatter）与聚集（Gather）
+ *  分散读取（Scattering Reads）:将通道中的数据分散到多个缓冲区中，依次、按顺序
+ *  聚集写入（Gathering Writes）:将多个缓冲区的数据聚集到通道中
  */
 public class TestChannel {
 
@@ -164,4 +166,39 @@ public class TestChannel {
         }
     }
 
+    //分散和聚集
+    @Test
+    public void test04(){
+        RandomAccessFile randomAccessFile = null;
+        try {
+            randomAccessFile = new RandomAccessFile("1.txt", "rw");
+            //1.获取通道
+            FileChannel randomAccessFileChannel = randomAccessFile.getChannel();
+
+            //2.分配指定大小的缓冲区
+            ByteBuffer buffer1 = ByteBuffer.allocate(10);
+            ByteBuffer buffer2 = ByteBuffer.allocate(1024);
+
+            //3.分散读取
+            ByteBuffer[] buffers = {buffer1, buffer2};
+            randomAccessFileChannel.read(buffers);
+
+            for (ByteBuffer buffer : buffers) {
+                buffer.flip();
+            }
+            System.out.println(new String(buffers[0].array(), buffers[0].capacity()));
+            System.out.println("----------------------------");
+            System.out.println(new String(buffers[1].array(), buffers[1].capacity()));
+
+            /*
+               还剩下聚集部分
+             */
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+        }
+    }
 }
