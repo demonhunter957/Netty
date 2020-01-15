@@ -1,4 +1,4 @@
-package nio;
+package java.nioDemo;
 
 import org.junit.Test;
 
@@ -115,10 +115,11 @@ public class TestChannel {
         FileChannel inChannel = null;
         FileChannel outChannel = null;
         try{
+            //通过FileChannel的静态方法open()获取FileChannel
             inChannel = FileChannel.open(Paths.get("1.txt"), StandardOpenOption.READ);
             outChannel = FileChannel.open(Paths.get("2.txt"), StandardOpenOption.WRITE, StandardOpenOption.READ, StandardOpenOption.CREATE);
 
-            //得到内存映射文件，道理跟allocateDirect()得到的buffer一样，在OS的屋里内存中。
+            //得到内存映射文件，道理跟allocateDirect()得到的buffer一样，在OS的物理内存中。
             MappedByteBuffer inMapBuffer = inChannel.map(FileChannel.MapMode.READ_ONLY, 0, inChannel.size());
             MappedByteBuffer outMapBuffer = outChannel.map(FileChannel.MapMode.READ_WRITE, 0, inChannel.size());
 
