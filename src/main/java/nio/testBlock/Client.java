@@ -31,13 +31,13 @@ public class Client {
             }
             socketChannel.shutdownOutput(); //告诉服务端已经发送数据完成
 
-            //4.接收服务端的反馈
-            int len;
-            while ((len=socketChannel.read(byteBuffer))!= -1){
-                byteBuffer.flip();
-                System.out.println(new String(byteBuffer.array(),0,len));
-                byteBuffer.clear();
-            }
+//            //4.接收服务端的反馈
+//            int len;
+//            while ((len=socketChannel.read(byteBuffer))!= -1){
+//                byteBuffer.flip();
+//                System.out.println(new String(byteBuffer.array(),0,len));
+//                byteBuffer.clear();
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }finally {

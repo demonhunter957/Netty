@@ -26,7 +26,8 @@ public class Server {
             //2.绑定连接
             serverSocketChannel.bind(new InetSocketAddress(9898));
             //3.获取客户端连接通道
-            socketChannel = serverSocketChannel.accept();
+            System.out.println(Thread.currentThread().getName() + "   等待客户端连接。。。。。。。");
+            socketChannel = serverSocketChannel.accept(); //等待客户端连接的时候会产生阻塞。。。
             //4.分配缓存区
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
             //5.接收客户端的数据并保存到本地
@@ -35,10 +36,11 @@ public class Server {
                 fileChannel.write(byteBuffer);
                 byteBuffer.clear();
             }
-            //6.反馈给客户端
-            byteBuffer.put("服务端接收到了。。".getBytes());
-            byteBuffer.flip();
-            socketChannel.write(byteBuffer);
+//            //6.反馈给客户端
+//            byteBuffer.put("服务端接收到了。。".getBytes());
+//            byteBuffer.flip();
+//            socketChannel.write(byteBuffer);
+            socketChannel.shutdownInput(); //告诉客户端接收完成
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
