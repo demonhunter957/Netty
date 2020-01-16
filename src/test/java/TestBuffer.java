@@ -1,5 +1,3 @@
-package java.nioDemo;
-
 import org.junit.Test;
 
 import java.nio.ByteBuffer;

@@ -1,5 +1,3 @@
-package java.nioDemo;
-
 import org.junit.Test;
 
 import java.io.*;
@@ -13,6 +11,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.SortedMap;
 
 /**
@@ -197,9 +196,11 @@ public class TestChannel {
             ByteBuffer[] buffers = {buffer1, buffer2};
             randomAccessFileChannel.read(buffers);
 
-            for (ByteBuffer buffer : buffers) {
-                buffer.flip();
-            }
+//            for (ByteBuffer buffer : buffers) {
+//                buffer.flip();
+//            }
+            Arrays.asList(buffers).forEach(buffer -> buffer.flip());
+
             System.out.println(new String(buffers[0].array(),0, buffers[0].capacity()));
             System.out.println("----------------------------");
             System.out.println(new String(buffers[1].array(),0, buffers[1].capacity()));
