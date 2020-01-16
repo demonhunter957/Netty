@@ -39,14 +39,15 @@ public class Server {
                     //9.判断具体是什么事件准备就绪
                     if (selectionKey.isAcceptable()){ //客户端的连接即为accept事件
                         System.out.println("accept from client...");
-                        socketChannel = serverSocketChannel.accept();
+                        socketChannel = serverSocketChannel.accept(); //虽然方法本身是阻塞的，但是这里不会产生阻塞，原因是上面那个if已经判断了事件为一个接收事件！
                         //将客户端的socketChannel切换成非阻塞模式
                         socketChannel.configureBlocking(false);
                         //将该通道注册到选择器上，监听模式为READ
                         socketChannel.register(selector, SelectionKey.OP_READ);
                         System.out.println("accept end..");
-                    }else if (selectionKey.isReadable()){ //如果是可读事件，也获取客户端的socketChannel
+                    }else if (selectionKey.isReadable()){ //如果是可读事件
                         System.out.println("read from client....");
+                        // 反向获取客户端的socketChannel
                         socketChannel = (SocketChannel) selectionKey.channel();
                         //读取数据
                         ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
