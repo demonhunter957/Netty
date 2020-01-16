@@ -11,6 +11,7 @@ import java.util.Iterator;
 
 /**
  * NIO模式聊天室服务端
+ * TCP/IP
  */
 public class Server {
 

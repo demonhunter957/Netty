@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 /**
  * NIO模式聊天室的客户端
+ * TCP/IP
  */
 public class Client {
 
