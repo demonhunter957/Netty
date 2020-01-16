@@ -16,11 +16,12 @@ public class Receiver {
 
     public static void main(String[] args) {
         DatagramChannel datagramChannel = null;
+        Selector selector = null;
         try {
             datagramChannel = DatagramChannel.open();
             datagramChannel.configureBlocking(false);
             datagramChannel.bind(new InetSocketAddress(9898));
-            Selector selector = Selector.open();
+            selector = Selector.open();
             datagramChannel.register(selector, SelectionKey.OP_READ);
             while (selector.select() > 0){
                 Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
@@ -40,7 +41,20 @@ public class Receiver {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-
+            if (null != selector){
+                try {
+                    selector.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (null != datagramChannel){
+                try {
+                    datagramChannel.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
