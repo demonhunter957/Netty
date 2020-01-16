@@ -73,7 +73,7 @@ public class TestChannel {
                 byteBuffer.flip(); //切换成读数据模式
                 //4.将缓冲区中的数据存写入通道
                 outChannel.write(byteBuffer);
-                byteBuffer.clear(); //清空缓冲区
+                byteBuffer.clear(); //清空缓冲区，如果不清空，当读完文件时read方法返回值为0，就会一直进入死循环
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -200,9 +200,9 @@ public class TestChannel {
             for (ByteBuffer buffer : buffers) {
                 buffer.flip();
             }
-            System.out.println(new String(buffers[0].array(), buffers[0].capacity()));
+            System.out.println(new String(buffers[0].array(),0, buffers[0].capacity()));
             System.out.println("----------------------------");
-            System.out.println(new String(buffers[1].array(), buffers[1].capacity()));
+            System.out.println(new String(buffers[1].array(),0, buffers[1].capacity()));
 
             //4.聚集写入
             randomAccessFile1 = new RandomAccessFile("2.txt", "rw");
