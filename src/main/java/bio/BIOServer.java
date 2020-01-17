@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 /**
  * 使用BIO模型编写服务端，监听6666端口，当有客户端连接时就启动一个线程与之通讯
  * 使用线程池
- * 客户端用telnet
+ * 客户端用可以用telnet模拟
  */
 public class BIOServer {
 
