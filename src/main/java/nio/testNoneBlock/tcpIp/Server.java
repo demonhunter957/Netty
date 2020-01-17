@@ -1,4 +1,4 @@
-package nio.testNoneBlock;
+package nio.testNoneBlock.tcpIp;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
