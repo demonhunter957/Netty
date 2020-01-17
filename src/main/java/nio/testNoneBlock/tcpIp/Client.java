@@ -25,8 +25,8 @@ public class Client {
             ByteBuffer byteBuffer = ByteBuffer.allocate(2048);
             //4.发送数据
             Scanner scanner = new Scanner(System.in);
-            while (scanner.hasNext()){
-                String s = scanner.next();
+            while (scanner.hasNextLine()){
+                String s = scanner.nextLine();
                 if (s.equals("exit")){
                     break;
                 }
