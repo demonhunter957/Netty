@@ -40,6 +40,7 @@ public class Server {
                     if (selectionKey.isAcceptable()){ //客户端的连接即为accept事件
                         System.out.println("accept from client...");
                         socketChannel = serverSocketChannel.accept(); //虽然方法本身是阻塞的，但是这里不会产生阻塞，原因是上面那个if已经判断了事件为一个接收事件！
+                        System.out.println("accept中客户端socketChannel的hash   " + socketChannel.hashCode());
                         //将客户端的socketChannel切换成非阻塞模式
                         socketChannel.configureBlocking(false);
                         //将该通道注册到选择器上，监听模式为READ
@@ -49,6 +50,7 @@ public class Server {
                         System.out.println("read from client....");
                         // 反向获取客户端的socketChannel
                         socketChannel = (SocketChannel) selectionKey.channel();
+                        System.out.println("read中客户端socketChannel的hash   " + socketChannel.hashCode());
                         //读取数据
                         ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
                         int len;
@@ -58,6 +60,10 @@ public class Server {
                             byteBuffer.clear();
                         }
                         System.out.println("read end....");
+                        if (-1 == len){ //表示客户端已断开连接
+                            System.out.println("断开..." + socketChannel.socket().getRemoteSocketAddress());
+                            socketChannel.close();
+                        }
                     }
                     //取消selectionKey
                     iterator.remove();

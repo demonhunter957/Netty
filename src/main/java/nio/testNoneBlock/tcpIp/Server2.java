@@ -16,10 +16,11 @@ public class Server2 {
         SocketChannel socketChannel = null;
         try{
             serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.configureBlocking(false);
-            serverSocketChannel.bind(new InetSocketAddress(9898));
             Selector selector = Selector.open();
+            serverSocketChannel.socket().bind(new InetSocketAddress(9899));
+            serverSocketChannel.configureBlocking(false);
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+            System.out.println("注册后selectionKey的数量" + selector.keys().size()); //1
             while (true){
                 if (selector.select(1000) == 0){
                     System.out.println("服务器等待了1秒。。");
@@ -32,6 +33,7 @@ public class Server2 {
                         socketChannel = serverSocketChannel.accept();
                         socketChannel.configureBlocking(false);
                         socketChannel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(1024)); //第三个参数意思是给当前注册到选择器上的socketChannel分配一个缓冲区
+                        System.out.println("有客户端连接后selectionKey的数量" + selector.keys().size());
                     }else if(selectionKey.isReadable()){
                         socketChannel = (SocketChannel) selectionKey.channel();
                         //获取到该socketChannel分配的缓冲区
@@ -42,9 +44,10 @@ public class Server2 {
                             System.out.println(new String(byteBuffer.array(),0, len));
                             byteBuffer.clear();
                         }
+                        System.out.println("read end..");
                     }
+                    iterator.remove();
                 }
-                iterator.remove();
             }
         } catch (IOException e){
             e.printStackTrace();

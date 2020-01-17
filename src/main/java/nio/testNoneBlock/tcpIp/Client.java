@@ -27,6 +27,9 @@ public class Client {
             Scanner scanner = new Scanner(System.in);
             while (scanner.hasNext()){
                 String s = scanner.next();
+                if (s.equals("exit")){
+                    break;
+                }
                 byteBuffer.put((new Date().toString() + "\n" + s).getBytes());
                 byteBuffer.flip();
                 socketChannel.write(byteBuffer);
