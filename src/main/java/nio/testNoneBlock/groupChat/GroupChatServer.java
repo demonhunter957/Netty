@@ -10,6 +10,9 @@ import java.util.Iterator;
 /**
  * NIO群聊系统服务端
  * 服务端可以检测客户端上线、离线，并转发消息
+ *
+ * 这是一种单Reactor单线程模式，Selector就相当于Reactor
+ * 单Reactor单线程模式，Reactor跟Handler在一个线程，如果有高并发，肯定会造成阻塞
  */
 public class GroupChatServer {
 
@@ -40,6 +43,7 @@ public class GroupChatServer {
     //监听
     public void listen(){
         SocketChannel socketChannel = null;
+        System.out.println("监听的线程 " + Thread.currentThread().getName());
         try{
             while (true){
                 int select = selector.select(2000);
@@ -104,12 +108,21 @@ public class GroupChatServer {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }finally {
+            if (null != socketChannel){
+                try {
+                    socketChannel.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     //转发消息给其他客户端
     private void sendToOtherClient(String message, SocketChannel self) throws IOException{
         System.out.println("服务器开始转发消息");
+        System.out.println("转发消息的线程： " + Thread.currentThread().getName());
         for (SelectionKey key : selector.keys()) {
             //通过key获取相应的socketChannel
             Channel targetChannel = key.channel();
