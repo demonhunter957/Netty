@@ -2,8 +2,10 @@ package netty.simple;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelPipeline;
 import io.netty.util.CharsetUtil;
 
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
@@ -15,10 +17,12 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("ctx = " + ctx);
+        Channel channel = ctx.channel();
+        ChannelPipeline pipeline = ctx.pipeline(); //pipeline本质是个双向链表，负责出栈入栈。
+
         ByteBuf byteBuf = (ByteBuf) msg;
         System.out.println("客户端发来的消息是：" + byteBuf.toString(CharsetUtil.UTF_8));
-        System.out.println("客户端的地址：" + ctx.channel().remoteAddress());
+        System.out.println("客户端的地址：" + channel.remoteAddress());
     }
 
     //读取客户端消息完毕后调用的方法
