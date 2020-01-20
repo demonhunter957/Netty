@@ -10,7 +10,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Chris
  * @create 2020-01-20 18:26
+ * 任务队列添加Task方式一：
+ *  用户程序自定义的普通任务
  *
+ * 任务队列添加Task方式二：
+ *  用户自定义的普通任务
  */
 public class NettyServerHandler2 extends ChannelInboundHandlerAdapter {
 
@@ -48,8 +52,13 @@ public class NettyServerHandler2 extends ChannelInboundHandlerAdapter {
             }
         });
 
+        //用户自定义定时任务，该任务提交到scheduleTaskQueue中
+        ctx.channel().eventLoop().schedule(() -> {
+            ctx.writeAndFlush(Unpooled.copiedBuffer("hello 客户端4444", CharsetUtil.UTF_8));
+        }, 5, TimeUnit.SECONDS);
+
         //如果在下一行打断点会发现: ctx.pipeline.channel.eventLoop中的taskQueue的size=2
-        System.out.println("get here..."); //这句话也能马上执行
+        System.out.println("reach last..."); //这句话也能马上执行
     }
 
     //读取客户端数据完毕后调用的方法
