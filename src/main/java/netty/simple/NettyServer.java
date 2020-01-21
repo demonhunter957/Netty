@@ -8,6 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class NettyServer {
 
+
     public static void main(String[] args) {
 
         //1.创建BossGroup和WorkerGroup线程组
@@ -24,12 +25,12 @@ public class NettyServer {
                 .channel(NioServerSocketChannel.class) //使用NioServerSocketChannel作为服务器通道的实现
                 .option(ChannelOption.SO_BACKLOG, 128) //设置线程队列等待连接的个数
                 .childOption(ChannelOption.SO_KEEPALIVE, true) //设置保持活动连接状态
-                .handler(null) //handler对应bossGroup
                 .childHandler(new ChannelInitializer<SocketChannel>() { //创建一个通道初始化对象,childHandler对应workerGroup
+                                                                        //handler对应bossGroup
                     //给workerGroup的pipeLine设置处理器
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast(new NettyServerHandler2()); //向管道的最后添加处理器
+                        socketChannel.pipeline().addLast(new NettyServerHandler()); //向管道的最后添加处理器
                     }
                 });
         System.out.println("server is ready...");

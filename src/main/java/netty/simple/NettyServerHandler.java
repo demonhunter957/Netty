@@ -17,26 +17,44 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("--------------channelRead() starts-----------------");
+        System.out.println("ctx的类型： " + ctx.getClass()); //io.netty.channel.DefaultChannelHandlerContext
         Channel channel = ctx.channel();
         ChannelPipeline pipeline = ctx.pipeline(); //pipeline本质是个双向链表，负责出栈入栈。
-
         ByteBuf byteBuf = (ByteBuf) msg;
         System.out.println("客户端发来的消息是：" + byteBuf.toString(CharsetUtil.UTF_8));
         System.out.println("客户端的地址：" + channel.remoteAddress());
+        System.out.println("--------------channelRead() ends-----------------");
     }
 
     //读取客户端消息完毕后调用的方法
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("---------------channelReadComplete() starts------------");
         //给客户端反馈消息
         ctx.writeAndFlush(Unpooled.copiedBuffer("hello 客户端！", CharsetUtil.UTF_8));
+        System.out.println("---------------channelReadComplete() ends------------");
     }
 
-    //处理异常
+    //异常发生时调用的方法
     //一般处理异常的方法是关闭通道
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
         ctx.close();
+    }
+
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx)  {
+        System.out.println("--------channelRegistered() starts------------");
+        System.out.println(ctx.channel().getClass()); //io.netty.channel.socket.nio.NioSocketChannel
+        System.out.println("--------channelRegistered() ends------------");
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        System.out.println("---------channelActive() starts------------");
+        System.out.println(ctx.channel().getClass()); //io.netty.channel.socket.nio.NioSocketChannel
+        System.out.println("---------channelActive() ends------------");
     }
 }

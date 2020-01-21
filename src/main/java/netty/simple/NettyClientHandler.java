@@ -11,6 +11,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     //当通道就绪的时候触发的方法
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("服务端中ctx的类型：" + ctx.channel().getClass());
         ctx.writeAndFlush(Unpooled.copiedBuffer("hello server...", CharsetUtil.UTF_8));
     }
 
