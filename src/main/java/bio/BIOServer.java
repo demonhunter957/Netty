@@ -10,7 +10,10 @@ import java.util.concurrent.Executors;
 /**
  * 使用BIO模型编写服务端，监听6666端口，当有客户端连接时就启动一个线程与之通讯
  * 使用线程池
- * 客户端用可以用telnet模拟
+ * 客户端用可以用telnet模拟:
+ *  在windows cmd下:  1.telnet localhost 6666
+ *                   2. ctrl + ]
+ *                   3. send <发送内容>
  */
 public class BIOServer {
 
@@ -18,6 +21,8 @@ public class BIOServer {
 
         //创建一个线程池
         ExecutorService executorService = Executors.newCachedThreadPool();
+        /* 如果server端只有一个线程，那么只能处理一个client的请求，只有等处理完第一个请求后才能处理第二个请求 */
+        // ExecutorService executorService1 = Executors.newFixedThreadPool(1);
         //创建一个ServerSocket，监听端口6666
         ServerSocket serverSocket = new ServerSocket(6666);
         System.out.println("服务器启动了");
