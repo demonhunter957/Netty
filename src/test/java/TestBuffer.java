@@ -61,18 +61,21 @@ public class TestBuffer {
         System.out.println(byteBuffer.capacity()); //1024
         System.out.println(byteBuffer.limit()); //1024
         System.out.println(byteBuffer.position()); //0
+        System.out.println("---------------initiate--------------");
 
         //利用put()存入到缓冲区中
         byteBuffer.put(string.getBytes());
         System.out.println(byteBuffer.capacity()); //1024
         System.out.println(byteBuffer.limit()); //1024
         System.out.println(byteBuffer.position()); //5
+        System.out.println("---------------put--------------");
 
         //切换到读取数据的模式
-        byteBuffer.flip(); //调用flip(),limit的值为上一个position, position的值变为0
+        byteBuffer.flip(); //调用flip(),limit的值为上一个position(上次写的位置), position的值变为0
         System.out.println(byteBuffer.capacity()); //1024
         System.out.println(byteBuffer.limit()); //5
         System.out.println(byteBuffer.position()); //0
+        System.out.println("---------------flip--------------");
 
         //利用get()读取数据
         byte[] dst = new byte[byteBuffer.limit()];
@@ -81,19 +84,29 @@ public class TestBuffer {
         System.out.println(byteBuffer.capacity()); //1024
         System.out.println(byteBuffer.limit()); //5
         System.out.println(byteBuffer.position()); //5
+        System.out.println("---------------get--------------");
 
         //rewind()，可重复读数据
         byteBuffer.rewind(); //调用rewind() position的值被设为0
         System.out.println(byteBuffer.capacity()); //1024
         System.out.println(byteBuffer.limit()); //5
         System.out.println(byteBuffer.position()); //0
+        System.out.println("---------------rewind--------------");
+
+        //compact()，再切换到写模式，从"abcde"后面开始写
+        byteBuffer.compact();
+        System.out.println(byteBuffer.capacity()); //1024
+        System.out.println(byteBuffer.limit()); // 1024
+        System.out.println(byteBuffer.position()); //5
+        System.out.println("---------------compact--------------");
 
         //clear()清空缓冲区，回到最初状态。但是缓冲区里面的数据依然存在，但是处于“被遗忘”状态
         byteBuffer.clear();
         System.out.println(byteBuffer.capacity()); //1024
         System.out.println(byteBuffer.limit()); //1024
         System.out.println(byteBuffer.position()); //0
-        System.out.println((char)byteBuffer.get());
+        System.out.println((char)byteBuffer.get()); //get一个byte
+        System.out.println(byteBuffer.position()); //1
     }
 
 
